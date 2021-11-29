@@ -62,6 +62,7 @@ class BaseOptions():
         Add additional model-specific and dataset-specific options.
         These options are defined in the <modify_commandline_options> function
         in model and dataset classes.
+        初始化parser 并根据model/dataset的情况进行精细化
         """
         if not self.initialized:  # check if it has been initialized
             parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -87,6 +88,7 @@ class BaseOptions():
 
     def print_options(self, opt):
         """Print and save options
+        打印改变了默认参数的变量信息，生成实验文件夹等相关文件。
 
         It will print both current options and default values(if different).
         It will save options into a text file / [checkpoints_dir] / opt.txt
@@ -111,18 +113,21 @@ class BaseOptions():
             opt_file.write('\n')
 
     def parse(self):
-        """Parse our options, create checkpoints directory suffix, and set up gpu device."""
+        """
+        初始化读取指定参数的函数。
+        Parse our options, create checkpoints directory suffix, and set up gpu device.
+        """
         opt = self.gather_options()
         opt.isTrain = self.isTrain   # train or test
 
-        # process opt.suffix
+        # process opt.suffix 加后缀 可以用{model}之类的字符串 并直接vars(opt)来调取其值
         if opt.suffix:
             suffix = ('_' + opt.suffix.format(**vars(opt))) if opt.suffix != '' else ''
             opt.name = opt.name + suffix
 
         self.print_options(opt)
 
-        # set gpu ids
+        # set gpu ids 分配运算GPU
         str_ids = opt.gpu_ids.split(',')
         opt.gpu_ids = []
         for str_id in str_ids:

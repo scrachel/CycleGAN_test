@@ -8,6 +8,7 @@ class TrainOptions(BaseOptions):
     """
 
     def initialize(self, parser):
+        # 代码并不直接调用 initialize函数 而是调用 parser()方法来进行的，这个initialize函数是为了精细化parser
         parser = BaseOptions.initialize(self, parser)
         # visdom and HTML visualization parameters
         parser.add_argument('--display_freq', type=int, default=400, help='frequency of showing training results on screen')

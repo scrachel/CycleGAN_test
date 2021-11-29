@@ -2,6 +2,7 @@
 
 We modify the official PyTorch image folder (https://github.com/pytorch/vision/blob/master/torchvision/datasets/folder.py)
 so that this class can load images from both current directory and its subdirectories.
+根据图片后缀拓展名查找文件
 """
 
 import torch.utils.data as data
